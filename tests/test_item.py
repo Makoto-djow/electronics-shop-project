@@ -63,3 +63,11 @@ def test_name(vacuum_cleaner_func, laptop_func):
     assert laptop_func.name == 'Ноутбук'
     laptop_func.name = 'Ноут'
     assert laptop_func.name == 'Ноут'
+
+
+def test__repr__(vacuum_cleaner_func):
+    assert repr(vacuum_cleaner_func) == 'Item(\'Пылесос\', 25999.99, 20)'
+
+
+def test__str__(laptop_func):
+    assert str(laptop_func) == 'Ноутбук'
