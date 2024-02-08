@@ -46,12 +46,11 @@ class Item:
             cls.all.clear()
             reader = csv.DictReader(csvfile)
             for rov in reader:
-                print(rov)
                 name = rov['name']
                 price = float(rov['price'])
                 quantity = int(rov['quantity'])
                 cls(name, price, quantity)
-            return name, price, quantity
+            return cls
 
     @staticmethod
     def string_to_number(numbers_string):

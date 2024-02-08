@@ -20,16 +20,6 @@ def laptop_func():
 
 
 @pytest.fixture
-def csv_file():
-    products_list = []
-    with open('src/items.csv', 'r', encoding='cp1251') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            products_list.append(row)
-    return products_list
-
-
-@pytest.fixture
 def numbers():
     number1 = Item.string_to_number('10')
     number2 = Item.string_to_number('11.0')
@@ -58,17 +48,19 @@ def test_apply_discount(vacuum_cleaner_func, laptop_func):
     assert laptop_func.price == 6000
 
 
-def test_instantiate_from_csv(csv_file):
-    assert len(csv_file) == 5
-    assert csv_file[1] == {'name': 'Ноутбук', 'price': '1000', 'quantity': '3'}
-    assert csv_file[3]['price'] == '50'
+def test_instantiate_from_csv():
+    Item.instantiate_from_csv('src/items.csv')
+    assert len(Item.all) == 5
 
 
 def test_string_to_number(numbers):
     assert numbers == (10, 11, 12, 13)
 
 
-def test_name(vacuum_cleaner_func):
+def test_name(vacuum_cleaner_func, laptop_func):
     assert vacuum_cleaner_func.name == 'Пылесос'
     vacuum_cleaner_func.name = 'ПылесосПылесос'
     assert vacuum_cleaner_func.name == 'ПылесосПыл'
+    assert laptop_func.name == 'Ноутбук'
+    laptop_func.name = 'Ноут'
+    assert laptop_func.name == 'Ноут'
