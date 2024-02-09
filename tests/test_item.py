@@ -18,6 +18,15 @@ def laptop_func():
     return laptop_func
 
 
+@pytest.fixture
+def numbers():
+    number1 = Item.string_to_number('10')
+    number2 = Item.string_to_number('11.0')
+    number3 = Item.string_to_number('12.14')
+    number4 = Item.string_to_number('13.7')
+    return number1, number2, number3, number4
+
+
 def test_item_init(vacuum_cleaner_func, laptop_func):
     assert vacuum_cleaner_func.name == 'Пылесос'
     assert vacuum_cleaner_func.price == 25999.99
@@ -35,4 +44,22 @@ def test_apply_discount(vacuum_cleaner_func, laptop_func):
     vacuum_cleaner_func.apply_discount()
     laptop_func.apply_discount()
     assert vacuum_cleaner_func.price == 18199.993
-    assert laptop_func.price == 10500
+    assert laptop_func.price == 6000
+
+
+def test_instantiate_from_csv():
+    Item.instantiate_from_csv('src/items.csv')
+    assert len(Item.all) == 5
+
+
+def test_string_to_number(numbers):
+    assert numbers == (10, 11, 12, 13)
+
+
+def test_name(vacuum_cleaner_func, laptop_func):
+    assert vacuum_cleaner_func.name == 'Пылесос'
+    vacuum_cleaner_func.name = 'ПылесосПылесос'
+    assert vacuum_cleaner_func.name == 'ПылесосПыл'
+    assert laptop_func.name == 'Ноутбук'
+    laptop_func.name = 'Ноут'
+    assert laptop_func.name == 'Ноут'
