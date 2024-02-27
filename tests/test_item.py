@@ -1,4 +1,6 @@
-from src.item import Item
+import pytest
+
+from src.item import Item, InstantiateCSVError
 
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 
@@ -24,8 +26,11 @@ def test_apply_discount(vacuum_cleaner_func, laptop_func):
 
 
 def test_instantiate_from_csv():
-    Item.instantiate_from_csv('src/items.csv')
-    assert len(Item.all) == 5
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv('')
+
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv('tests/test.csv')
 
 
 def test_string_to_number(numbers):
