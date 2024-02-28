@@ -56,13 +56,14 @@ class Item:
                 cls.all.clear()
                 reader = csv.DictReader(csvfile)
                 for rov in reader:
+                    # Исключение в случае повреждения файла
+                    if not all(key in rov for key in ('name', 'price', 'quantity')):
+                        raise InstantiateCSVError('Файл items.csv поврежден')
+                    #
                     name = str(rov['name'])
                     price = float(rov['price'])
                     quantity = int(rov['quantity'])
                     cls(name, price, quantity)
-                if len(cls.all) != 5:
-                    raise InstantiateCSVError('Файл items.csv поврежден')
-
         except FileNotFoundError:
             print('Отсутствует файл items.csv')
             raise
